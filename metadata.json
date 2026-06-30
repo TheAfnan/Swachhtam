@@ -1,0 +1,6 @@
+{
+  "name": "Swachhtam",
+  "description": "Hyperlocal Community Problem-Solving Platform with Predictive Civic Analytics and AI Incident Reporting System.",
+  "requestFramePermissions": ["geolocation", "microphone", "camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

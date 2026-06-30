@@ -1,0 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Custom minimal scrollbar to keep layout premium */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-secondary);
+}
+
+/* Sophisticated clean tech grid background (extremely subtle) */
+.bg-tech-grid {
+  background-image: linear-gradient(rgba(148, 163, 184, 0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(148, 163, 184, 0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-radial-glow {
+  background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+}
+
+.border-premium {
+  border-width: 1px;
+  border-color: var(--border-primary);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.border-premium:hover {
+  border-color: var(--border-secondary);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Elegant Light/Dark Mode Variables & Theme Engine */
+:root {
+  --bg-app: #fafafa;
+  --bg-card: #ffffff;
+  --bg-popover: rgba(255, 255, 255, 0.98);
+  --bg-sidebar: #ffffff;
+  --bg-accent: #f4f4f5;
+  --text-primary: #09090b;
+  --text-secondary: #52525b;
+  --text-muted: #71717a;
+  --border-primary: #e4e4e7;
+  --border-secondary: #d4d4d8;
+  --radius-card: 12px;
+  --radius-button: 8px;
+  --logo-hand: #15293c;
+  --wordmark-swachh: #15293c;
+  --wordmark-tam: #439a26;
+  --wordmark-line: #439a26;
+  --wordmark-tagline: #475569;
+  color-scheme: light;
+}
+
+.dark {
+  --bg-app: #09090b;
+  --bg-card: #18181b;
+  --bg-popover: rgba(24, 24, 27, 0.98);
+  --bg-sidebar: #09090b;
+  --bg-accent: #27272a;
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --border-primary: #27272a;
+  --border-secondary: #3f3f46;
+  --logo-hand: #ffffff;
+  --wordmark-swachh: #ffffff;
+  --wordmark-tam: #84cc16;
+  --wordmark-line: #84cc16;
+  --wordmark-tagline: #94a3b8;
+  color-scheme: dark;
+}
+
+/* Enforce modern SaaS border radius and flat design limits globally */
+[class*="rounded-3xl"] {
+  border-radius: var(--radius-card) !important;
+}
+[class*="rounded-2xl"] {
+  border-radius: var(--radius-card) !important;
+}
+[class*="rounded-xl"] {
+  border-radius: var(--radius-button) !important;
+}
+
+/* Intercept backgrounds and borders globally for clean inheritance in both Light and Dark modes */
+[class*="bg-[#05070a]"], 
+[class*="bg-[#020408]"], 
+[class*="bg-[#030509]"], 
+[class*="bg-[#04060a]"], 
+[class*="bg-[#070b13]"], 
+[class*="bg-[#090d16]"], 
+[class*="bg-[#0c1220]"],
+[class*="bg-slate-950"],
+.bg-slate-950 {
+  background-color: var(--bg-app) !important;
+  background-image: none !important;
+}
+
+[class*="bg-[#0c1017]"], 
+[class*="bg-[#0b101d]"], 
+[class*="bg-[#090f1d]"], 
+[class*="bg-[#0c1322]"], 
+[class*="bg-[#0b111e]"], 
+[class*="bg-[#040810]"], 
+[class*="bg-[#06090e]"], 
+[class*="bg-[#0a0f18]"], 
+[class*="bg-[#070c15]"], 
+[class*="bg-[#04070c]"], 
+[class*="bg-[#04070d]"], 
+[class*="bg-[#090e1a]"], 
+[class*="bg-[#080e1a]"], 
+[class*="bg-[#070d18]"], 
+[class*="bg-[#080e19]"], 
+[class*="bg-[#111a26]"], 
+[class*="bg-[#182030]"], 
+[class*="bg-[#0c1527]"],
+[class*="bg-slate-900"],
+.bg-slate-900 {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-primary) !important;
+  background-image: none !important;
+}
+
+[class*="bg-[#121826]"], 
+[class*="bg-[#111621]"], 
+[class*="bg-[#080d15]"], 
+[class*="bg-[#080d16]"], 
+[class*="bg-[#030712]"], 
+[class*="bg-[#060a12]"], 
+[class*="bg-[#0a0d14]"], 
+[class*="bg-[#111c30]"] {
+  background-color: var(--bg-accent) !important;
+  border-color: var(--border-secondary) !important;
+  background-image: none !important;
+}
+
+/* Modals, popovers, drawers, and overlay layouts */
+[class*="bg-slate-900/90"],
+[class*="bg-slate-950/85"],
+[class*="bg-slate-950/80"],
+[class*="bg-slate-950/60"],
+[class*="bg-slate-950/40"] {
+  background-color: var(--bg-popover) !important;
+  border-color: var(--border-primary) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+/* High contrast readable text mappings for both modes */
+[class*="text-slate-50"], 
+[class*="text-slate-100"], 
+[class*="text-slate-200"], 
+[class*="text-gray-50"], 
+[class*="text-gray-100"], 
+[class*="text-gray-200"], 
+[class*="text-white"],
+.text-slate-100,
+.text-white {
+  color: var(--text-primary) !important;
+}
+
+[class*="text-slate-300"], 
+[class*="text-slate-400"], 
+[class*="text-gray-300"], 
+[class*="text-gray-400"] {
+  color: var(--text-secondary) !important;
+}
+
+[class*="text-slate-500"], 
+[class*="text-slate-600"], 
+[class*="text-gray-500"] {
+  color: var(--text-muted) !important;
+}
+
+/* Border line overrides globally for clean SaaS visual hierarchy */
+[class*="border-slate-800"], 
+[class*="border-slate-850"], 
+[class*="border-slate-700"], 
+[class*="border-teal-950"],
+[class*="border-slate-700/60"],
+[class*="border-slate-800/80"] {
+  border-color: var(--border-primary) !important;
+}
+
+/* Flatten all gradient overlays to prevent muddy background mixtures */
+[class*="bg-gradient-to-"] {
+  background-image: none !important;
+}
+
+/* Keep text color readable on solid colored buttons */
+button.bg-emerald-600,
+button.bg-emerald-700,
+button.bg-red-600,
+button.bg-red-500,
+#btn-auth-submit {
+  color: #ffffff !important;
+}
+
+/* Beautiful custom button adjustments */
+#btn-read-aloud {
+  background-color: var(--bg-accent) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-primary) !important;
+}
+#btn-read-aloud:hover {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+#btn-sahayata-bot,
+#btn-area-map-action {
+  background-color: #10b981 !important;
+  color: #000000 !important;
+  border: 1px solid transparent !important;
+}
+#btn-sahayata-bot:hover,
+#btn-area-map-action:hover {
+  background-color: #059669 !important;
+  color: #000000 !important;
+}
+
+/* Navigation button active and hover states */
+[id^="btn-sidebar-tab-"].bg-emerald-950/45,
+[id^="btn-mobile-tab-"].bg-emerald-950/50 {
+  background-color: var(--bg-accent) !important;
+  color: #10b981 !important;
+  border-color: #10b981 !important;
+}
+
+[id^="btn-sidebar-tab-"]:hover,
+[id^="btn-mobile-tab-"]:hover {
+  background-color: var(--bg-accent) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Leaflet maps custom styles in SaaS theme */
+.leaflet-popup-content-wrapper {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-primary) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.leaflet-popup-tip {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-primary) !important;
+}
+
+/* Vector blueprint architectural morph rules for light mode */
+.light #vector-map-frame {
+  background-color: #f8fafc !important;
+}
+.light #vector-map-frame path {
+  stroke: rgba(15, 23, 42, 0.08) !important;
+}
+.light #vector-map-frame path[class*="fill-[#04080e]"] {
+  fill: #f1f5f9 !important;
+}
+.light #vector-map-frame path[class*="fill-[#020408]"] {
+  fill: #e2e8f0 !important;
+}
+.light #vector-map-frame line {
+  stroke: rgba(16, 185, 129, 0.12) !important;
+}
+.light #vector-map-frame text {
+  fill: #64748b !important;
+}
+
+/* Ensure vector map markers and highlights remain crisp and visible */
+#vector-map-frame text {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+#vector-map-frame circle {
+  transition: all 0.2s ease-in-out;
+}
+
