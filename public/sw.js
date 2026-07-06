@@ -1,4 +1,4 @@
-const CACHE_NAME = 'civic-ai-v1';
+const CACHE_NAME = 'civic-ai-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -36,13 +36,21 @@ self.addEventListener('fetch', (event) => {
   }
   
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).catch(() => {
-        // Fallback or silently fail for network-only assets
-      });
-    })
+    fetch(event.request)
+      .then((response) => {
+        // Cache the latest index/assets if they are in ASSETS_TO_CACHE
+        const url = new URL(event.request.url);
+        if (ASSETS_TO_CACHE.includes(url.pathname)) {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseClone);
+          });
+        }
+        return response;
+      })
+      .catch(() => {
+        // Fallback to cache if offline
+        return caches.match(event.request);
+      })
   );
 });
