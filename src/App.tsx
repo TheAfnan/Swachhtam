@@ -48,6 +48,8 @@ export default function App() {
   const [user, setUser] = useState<any>(null);
   const [reports, setReports] = useState<CivicReport[]>([]);
   const [zones, setZones] = useState<DigitalTwinZone[]>([]);
+  // pendingLanguage: tracks which card is highlighted — does NOT close intro until Get Started is clicked
+  const [pendingLanguage, setPendingLanguage] = useState<string>(language || '');
   const [predictions, setPredictions] = useState<PredictionHotspot[]>([]);
   const [currentTab, setCurrentTab] = useState<string>('dashboard');
   const [darkMode, setDarkMode] = useState<boolean>(() => {
@@ -298,6 +300,26 @@ export default function App() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-emerald-500/4 rounded-full blur-3xl pointer-events-none" />
 
+            {/* Dark / Light mode toggle — top right corner */}
+            <div className="absolute top-4 right-4 z-20">
+              <button
+                id="btn-lang-page-darkmode-toggle"
+                onClick={handleToggleDarkMode}
+                aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+                className="flex items-center justify-center w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all duration-200 text-slate-600 dark:text-slate-300"
+              >
+                {darkMode ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 0 0 10A5 5 0 0 0 12 7z" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                  </svg>
+                )}
+              </button>
+            </div>
+
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -305,9 +327,9 @@ export default function App() {
               className="w-full max-w-lg relative z-10"
               id="language-intro-card"
             >
-              {/* ── Hero Header ── */}
+              {/* Hero Header */}
               <div className="text-center mb-8">
-                {/* Exact logo from brand — icon + wordmark side by side, centered */}
+                {/* Logo badge + wordmark */}
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -327,12 +349,12 @@ export default function App() {
                     Choose Your Language
                   </h2>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                    अपनी भाषा चुनें &nbsp;·&nbsp; ನಿಮ್ಮ ಭಾಷೆ ಆರಿಸಿ &nbsp;·&nbsp; உங்கள் மொழி
+                    अपनी भाषा चुनें &nbsp;•&nbsp; மொழியை தேர்வு
                   </p>
                 </motion.div>
               </div>
 
-              {/* ── Language Cards Grid ── */}
+              {/* Language Cards Grid */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -340,12 +362,11 @@ export default function App() {
                 className="grid grid-cols-3 gap-3 mb-4"
                 id="language-selection-buttons-grid"
               >
-                {/* English always first, then remaining languages in original order */}
                 {[
                   ...SUPPORTED_LANGUAGES.filter(l => l.code === 'en'),
                   ...SUPPORTED_LANGUAGES.filter(l => l.code !== 'en')
                 ].map((lang, idx) => {
-                  const isSelected = language === lang.code;
+                  const isSelected = pendingLanguage === lang.code;
                   return (
                     <motion.button
                       key={lang.code}
@@ -356,16 +377,16 @@ export default function App() {
                       whileHover={{ y: -2, scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
                       onClick={() => {
-                        setLanguage(lang.code);
+                        setPendingLanguage(lang.code);
                         const greetings: Record<string, string> = {
-                          en: "English selected. Welcome!",
-                          hi: "हिंदी भाषा चुनी गई है। आपका स्वागत है!",
-                          ta: "தமிழ் மொழி தேர்ந்தெடுக்கப்பட்டது. வரவேற்கிறோம்!",
-                          te: "తెలుగు భాష ఎంచుకోబడింది. స్వాగతం!",
-                          kn: "ಕನ್ನಡ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ. ಸ್ವಾಗತ!",
-                          mr: "मराठी भाषा निवडली आहे. आपले स्वागत आहे!"
+                          en: "English selected. Click Get Started to continue!",
+                          hi: "हिंदी भाषा चुनी गई! अब 'शुरू करें' दबाएं।",
+                          ta: "தமிழ் மொழி தேர்ந்தெடுக்கப்பட்டது. 'தொடங்குக' அழுத்தவும்!",
+                          te: "తెలుగు భాష ఎంచుకోబడింది. 'ప్రారంభించు' నొక్కండి!",
+                          kn: "ಕನ್ನಡ ಭಾಷೆ ಆರಿಸಲಾಗಿದೆ. 'ಪ್ರಾರಂಭಿಸು' ಒತ್ತಿರಿ!",
+                          mr: "मराठी भाषा निवडली. 'सुरू करा' दाबा!"
                         };
-                        speakText(greetings[lang.code] || "Welcome");
+                        speakText(greetings[lang.code] || "Language selected!");
                       }}
                       className={`relative flex flex-col items-center justify-center gap-1.5 py-5 px-2 rounded-xl border-2 transition-all duration-200 cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
                         isSelected
@@ -373,7 +394,7 @@ export default function App() {
                           : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 hover:border-emerald-300 dark:hover:border-emerald-700 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/10'
                       }`}
                     >
-                      {/* Selected check */}
+                      {/* Selected checkmark */}
                       {isSelected && (
                         <motion.span
                           initial={{ scale: 0 }}
@@ -397,7 +418,7 @@ export default function App() {
                 })}
               </motion.div>
 
-              {/* ── Easy Mode Toggle ── */}
+              {/* Easy Mode Toggle */}
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -405,17 +426,12 @@ export default function App() {
                 className="flex items-center justify-between gap-4 px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 mb-4"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className="text-xl select-none flex-shrink-0">👴👵</span>
+                  <span className="text-xl select-none" role="img" aria-label="seniors">👴👵</span>
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-slate-800 dark:text-slate-200 leading-tight">
-                      Easy Mode &nbsp;<span className="text-slate-400 font-medium">(आसान मोड)</span>
-                    </p>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 leading-tight mt-0.5 truncate">
-                      Bigger text, voice guidance &amp; larger buttons
-                    </p>
+                    <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 leading-tight">Easy Mode</p>
+                    <p className="text-[11px] text-slate-400 dark:text-slate-500 leading-tight">Larger text &amp; voice guidance</p>
                   </div>
                 </div>
-
                 {/* Custom pill toggle */}
                 <button
                   id="accessibility-intro-toggle"
@@ -433,40 +449,35 @@ export default function App() {
                 </button>
               </motion.div>
 
-              {/* ── Start Button ── */}
+              {/* Get Started Button */}
               <motion.button
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.68 }}
                 id="btn-language-intro-continue"
-                disabled={!language}
-                whileHover={language ? { y: -1, scale: 1.01 } : {}}
-                whileTap={language ? { scale: 0.98 } : {}}
+                disabled={!pendingLanguage}
+                whileHover={pendingLanguage ? { y: -1, scale: 1.01 } : {}}
+                whileTap={pendingLanguage ? { scale: 0.98 } : {}}
                 onClick={() => {
-                  setShowLanguageIntro(false);
-                  speakText(t('welcome') + ". " + t('simpleModeTip'));
+                  if (!pendingLanguage) return;
+                  setLanguage(pendingLanguage);
+                  speakText('Welcome to Swachhtam. Let us make our city better together.');
                 }}
                 className={`w-full py-4 rounded-xl font-bold text-sm tracking-wide transition-all duration-200 flex items-center justify-center gap-2 ${
-                  language
+                  pendingLanguage
                     ? 'bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg shadow-emerald-500/20 cursor-pointer'
                     : 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
                 }`}
               >
-                {language ? (
+                {pendingLanguage ? (
                   <>
-                    <span>
-                      {language === 'en' ? "Get Started" :
-                       language === 'hi' ? "ऐप शुरू करें" :
-                       language === 'ta' ? "செயலியைத் தொடங்கவும்" :
-                       language === 'te' ? "యాప్‌ను ప్రారంభించండి" :
-                       language === 'kn' ? "ಆಪ್ ಪ್ರಾರಂಭಿಸಿ" : "ॲप सुरू करा"}
-                    </span>
+                    <span>Get Started</span>
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                     </svg>
                   </>
                 ) : (
-                  "Select a language above / ऊपर भाषा चुनें"
+                  "Select a language above to continue"
                 )}
               </motion.button>
 
