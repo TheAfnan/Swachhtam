@@ -237,8 +237,8 @@ button.bg-red-500,
 }
 
 /* Navigation button active and hover states */
-[id^="btn-sidebar-tab-"].bg-emerald-950/45,
-[id^="btn-mobile-tab-"].bg-emerald-950/50 {
+[id^="btn-sidebar-tab-"].bg-emerald-950\/45,
+[id^="btn-mobile-tab-"].bg-emerald-950\/50 {
   background-color: var(--bg-accent) !important;
   color: #10b981 !important;
   border-color: #10b981 !important;
