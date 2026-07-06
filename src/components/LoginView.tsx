@@ -21,6 +21,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { loginWithEmail, registerWithEmail, loginWithGoogle, resendVerificationEmail, resetPassword } from '../lib/firebase';
 import Logo, { BrandWordmark } from './Logo';
+import { useLanguage } from '../lib/LanguageContext';
 
 interface LoginViewProps {
   onLoginSuccess: () => void;
@@ -34,6 +35,7 @@ export default function LoginView({
   onToggleDarkMode
 }: LoginViewProps) {
   const authCardRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
   const [role, setRole] = useState<'citizen' | 'authority' | 'admin'>('citizen');
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState('');
@@ -303,7 +305,7 @@ export default function LoginView({
         {/* Right: Role selector */}
         <div className="flex flex-col items-start md:items-end gap-2">
           <span className="text-[11px] font-bold tracking-wider uppercase text-slate-500">
-            Choose your role to get started
+            {t('roleSelectTitle')}
           </span>
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             {/* Citizen Hero Card */}
@@ -331,9 +333,9 @@ export default function LoginView({
                 <Users className="w-4 h-4" />
               </div>
               <div>
-                <h3 className={`text-xs font-bold ${role === 'citizen' ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300'}`}>Citizen Hero</h3>
+                <h3 className={`text-xs font-bold ${role === 'citizen' ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300'}`}>{t('citizenHeroTitle')}</h3>
                 <p className="text-[9px] text-slate-500 mt-0.5 leading-none">
-                  Report issues & make your city better
+                  {t('citizenHeroDesc')}
                 </p>
               </div>
               <ChevronRight className={`w-3.5 h-3.5 ml-1 transition-transform ${
@@ -366,9 +368,9 @@ export default function LoginView({
                 <Building2 className="w-4 h-4" />
               </div>
               <div>
-                <h3 className={`text-xs font-bold ${role === 'authority' ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300'}`}>Municipal Authority</h3>
+                <h3 className={`text-xs font-bold ${role === 'authority' ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300'}`}>{t('municipalAuthorityTitle')}</h3>
                 <p className="text-[9px] text-slate-500 mt-0.5 leading-none">
-                  Manage, assign & resolve citizen issues
+                  {t('municipalAuthorityDesc')}
                 </p>
               </div>
               <ChevronRight className={`w-3.5 h-3.5 ml-1 transition-transform ${
@@ -401,9 +403,9 @@ export default function LoginView({
                 <Sliders className="w-4 h-4" />
               </div>
               <div>
-                <h3 className={`text-xs font-bold ${role === 'admin' ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300'}`}>System Admin</h3>
+                <h3 className={`text-xs font-bold ${role === 'admin' ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300'}`}>{t('systemAdminTitle')}</h3>
                 <p className="text-[9px] text-slate-500 mt-0.5 leading-none">
-                  Configure cities, roles & categories
+                  {t('systemAdminDesc')}
                 </p>
               </div>
               <ChevronRight className={`w-3.5 h-3.5 ml-1 transition-transform ${
@@ -422,15 +424,15 @@ export default function LoginView({
           <div className="space-y-6">
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold">
               <Sparkles className="w-3.5 h-3.5 animate-pulse text-emerald-500" />
-              <span>Community Action Portal</span>
+              <span>{t('appName')}</span>
             </div>
             
             <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight tracking-tight">
-              Let's build a cleaner tomorrow, <span className="text-emerald-600 dark:text-emerald-400">together.</span>
+              {t('landingHeading')} <span className="text-emerald-600 dark:text-emerald-400">{t('landingHeadingTogether')}</span>
             </h1>
             
             <p className="text-slate-500 dark:text-slate-400 text-sm md:text-base leading-relaxed">
-              Swachhtam is your community action portal to report, track, and resolve issues for a better and cleaner city.
+              {t('landingSubheading')}
             </p>
 
             {/* Three Feature Cards with green circles */}
@@ -440,8 +442,8 @@ export default function LoginView({
                   <FileText className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">Report</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">Easily report civic issues in your area</p>
+                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">{t('reportFeature')}</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">{t('reportFeatureDesc')}</p>
                 </div>
               </div>
 
@@ -450,8 +452,8 @@ export default function LoginView({
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">Track</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">Track real-time status of your reports</p>
+                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">{t('trackFeature')}</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">{t('trackFeatureDesc')}</p>
                 </div>
               </div>
 
@@ -460,8 +462,8 @@ export default function LoginView({
                   <Shield className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">Resolve</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">Work together for a cleaner city</p>
+                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">{t('resolveFeature')}</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">{t('resolveFeatureDesc')}</p>
                 </div>
               </div>
             </div>
@@ -512,11 +514,11 @@ export default function LoginView({
                 <div className="text-center space-y-1">
                   <h2 className="text-xl font-bold tracking-tight text-white font-sans" id="login-title">
                     {role === 'authority' 
-                      ? 'Welcome Back' 
-                      : (isRegister ? 'Create Your Citizen Account' : 'Welcome Back')}
+                      ? t('welcomeBack') 
+                      : (isRegister ? t('createCitizenAccount') : t('welcomeBack'))}
                   </h2>
                   <p className="text-xs text-slate-400">
-                    Sign in to report, track, and solve community issues.
+                    {t('signInDesc')}
                   </p>
                 </div>
 
@@ -548,12 +550,12 @@ export default function LoginView({
                           d="M23.523 12.273c0-.818-.082-1.609-.227-2.364H12v4.51h6.47c-.28 1.482-1.12 2.74-2.38 3.59l3.91 3.837c2.28-2.1 3.523-5.19 3.523-7.573z"
                         />
                       </svg>
-                      <span>{isRegister ? 'Sign Up with Google' : 'Sign In with Google'}</span>
+                      <span>{isRegister ? t('googleSignUp') : t('googleSignIn')}</span>
                     </button>
 
                     <div className="relative flex py-1 items-center text-slate-550">
                       <div className="flex-grow border-t border-slate-800/50" />
-                      <span className="flex-shrink mx-3 text-[10px] font-bold uppercase tracking-widest text-slate-550">or use email</span>
+                      <span className="flex-shrink mx-3 text-[10px] font-bold uppercase tracking-widest text-slate-550">{t('orUseEmail')}</span>
                       <div className="flex-grow border-t border-slate-800/50" />
                     </div>
                   </div>
@@ -592,7 +594,7 @@ export default function LoginView({
                   {/* Full Name Field (Citizen Registration only) */}
                   {role === 'citizen' && isRegister && (
                     <div className="space-y-1.5 animate-fade-in">
-                      <label className="text-xs font-bold text-slate-500 dark:text-slate-300">Full Name</label>
+                      <label className="text-xs font-bold text-slate-500 dark:text-slate-300">{t('fullNameLabel')}</label>
                       <div id="wrapper-input-name" className="relative">
                         <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
                         <input
@@ -600,7 +602,7 @@ export default function LoginView({
                           id="input-name"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          placeholder="Enter your full name"
+                          placeholder={t('fullNamePlaceholder')}
                           required
                           className="w-full pl-10 pr-4 py-2.5 text-sm bg-[#070b13] border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/15 focus:border-emerald-500 text-slate-100 transition-all duration-200 placeholder-slate-400 dark:placeholder-slate-600 font-sans"
                         />
@@ -610,7 +612,7 @@ export default function LoginView({
 
                   {/* Email Field */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-500 dark:text-slate-300">Email Address</label>
+                    <label className="text-xs font-bold text-slate-500 dark:text-slate-300">{t('emailLabel')}</label>
                     <div id="wrapper-input-email" className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
                       <input
@@ -618,7 +620,7 @@ export default function LoginView({
                         id="input-email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email address"
+                        placeholder={t('emailPlaceholder')}
                         required
                         className="w-full pl-10 pr-4 py-2.5 text-sm bg-[#070b13] border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/15 focus:border-emerald-500 text-slate-100 transition-all duration-200 placeholder-slate-400 dark:placeholder-slate-600 font-sans"
                       />
@@ -628,14 +630,14 @@ export default function LoginView({
                   {/* Password Field */}
                   <div className="space-y-1.5">
                     <div className="flex justify-between items-center">
-                      <label className="text-xs font-bold text-slate-500 dark:text-slate-300">Password</label>
+                      <label className="text-xs font-bold text-slate-500 dark:text-slate-300">{t('passwordLabel')}</label>
                       {!isRegister && (
                         <button
                           type="button"
                           onClick={handleForgotPassword}
                           className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline cursor-pointer"
                         >
-                          Forgot Password?
+                          {t('forgotPasswordLink')}
                         </button>
                       )}
                     </div>
@@ -664,7 +666,7 @@ export default function LoginView({
                   {/* Confirm Password (Citizen Registration only) */}
                   {role === 'citizen' && isRegister && (
                     <div className="space-y-1.5 animate-fade-in">
-                      <label className="text-xs font-bold text-slate-500 dark:text-slate-300">Confirm Password</label>
+                      <label className="text-xs font-bold text-slate-500 dark:text-slate-300">{t('confirmPasswordLabel')}</label>
                       <div id="wrapper-input-confirm-password" className="relative">
                         <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
                         <input
@@ -672,7 +674,7 @@ export default function LoginView({
                           id="input-confirm-password"
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
-                          placeholder="Confirm your password"
+                          placeholder={t('confirmPasswordPlaceholder')}
                           required
                           className="w-full pl-10 pr-10 py-2.5 text-sm bg-[#070b13] border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/15 focus:border-emerald-500 text-slate-100 transition-all duration-200 placeholder-slate-400 dark:placeholder-slate-600 font-sans"
                         />
@@ -718,7 +720,7 @@ export default function LoginView({
                         className="w-4 h-4 rounded border-slate-700 text-emerald-600 focus:ring-emerald-500 bg-[#070b13] cursor-pointer"
                       />
                       <label htmlFor="remember-me" className="text-xs font-bold text-slate-500 cursor-pointer select-none">
-                        Remember me
+                        {t('rememberMeLabel')}
                       </label>
                     </div>
                   )}
@@ -736,10 +738,10 @@ export default function LoginView({
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                         </svg>
-                        <span>{isRegister ? 'Creating Account...' : 'Signing in...'}</span>
+                        <span>{isRegister ? t('creatingAccountBtn') : t('signingInBtn')}</span>
                       </div>
                     ) : (
-                      <span>{isRegister ? 'Create Account' : 'Sign In'}</span>
+                      <span>{isRegister ? t('createAccountBtn') : t('signInBtn')}</span>
                     )}
                   </button>
                 </form>
@@ -751,7 +753,7 @@ export default function LoginView({
                       <p className="text-xs text-slate-400">
                         {isRegister ? (
                           <>
-                            Already have an account?{' '}
+                            {t('alreadyHaveAccount')}{' '}
                             <button
                               type="button"
                               id="btn-toggle-auth-mode"
@@ -762,12 +764,12 @@ export default function LoginView({
                               }}
                               className="font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline cursor-pointer transition-colors"
                             >
-                              Sign In
+                              {t('signInLink')}
                             </button>
                           </>
                         ) : (
                           <>
-                            Don't have an account?{' '}
+                            {t('dontHaveAccount')}{' '}
                             <button
                               type="button"
                               id="btn-toggle-auth-mode"
@@ -778,7 +780,7 @@ export default function LoginView({
                               }}
                               className="font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline cursor-pointer transition-colors"
                             >
-                              Sign Up
+                              {t('signUpLink')}
                             </button>
                           </>
                         )}
