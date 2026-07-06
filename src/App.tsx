@@ -295,7 +295,7 @@ export default function App() {
         {/* Language Selection Screen when app starts */}
         {showLanguageIntro ? (
           <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 dark:bg-[#05070a]">
-            
+
             {/* Decorative ambient glow blobs */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-emerald-500/4 rounded-full blur-3xl pointer-events-none" />
@@ -323,17 +323,16 @@ export default function App() {
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, ease: 'easeOut' }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
               className="w-full max-w-lg relative z-10"
               id="language-intro-card"
             >
               {/* Hero Header */}
               <div className="text-center mb-8">
-                {/* Logo badge + wordmark */}
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1, duration: 0.4, ease: 'easeOut' }}
+                  transition={{ delay: 0.1, duration: 0.4, ease: "easeOut" }}
                   className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-[#15202b] dark:bg-[#111a26] shadow-lg mb-6"
                 >
                   <Logo size={40} />
@@ -349,7 +348,7 @@ export default function App() {
                     Choose Your Language
                   </h2>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                    अपनी भाषा चुनें &nbsp;•&nbsp; மொழியை தேர்வு
+                    अपनी भाषा चुनें &nbsp;&bull;&nbsp; மொழியை தேர்வு
                   </p>
                 </motion.div>
               </div>
@@ -378,15 +377,7 @@ export default function App() {
                       whileTap={{ scale: 0.97 }}
                       onClick={() => {
                         setPendingLanguage(lang.code);
-                        const greetings: Record<string, string> = {
-                          en: "English selected. Click Get Started to continue!",
-                          hi: "हिंदी भाषा चुनी गई! अब 'शुरू करें' दबाएं।",
-                          ta: "தமிழ் மொழி தேர்ந்தெடுக்கப்பட்டது. 'தொடங்குக' அழுத்தவும்!",
-                          te: "తెలుగు భాష ఎంచుకోబడింది. 'ప్రారంభించు' నొక్కండి!",
-                          kn: "ಕನ್ನಡ ಭಾಷೆ ಆರಿಸಲಾಗಿದೆ. 'ಪ್ರಾರಂಭಿಸು' ಒತ್ತಿರಿ!",
-                          mr: "मराठी भाषा निवडली. 'सुरू करा' दाबा!"
-                        };
-                        speakText(greetings[lang.code] || "Language selected!");
+                        speakText(lang.code === 'en' ? 'English selected. Click Get Started!' : 'Language selected!');
                       }}
                       className={`relative flex flex-col items-center justify-center gap-1.5 py-5 px-2 rounded-xl border-2 transition-all duration-200 cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
                         isSelected
@@ -394,7 +385,6 @@ export default function App() {
                           : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 hover:border-emerald-300 dark:hover:border-emerald-700 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/10'
                       }`}
                     >
-                      {/* Selected checkmark */}
                       {isSelected && (
                         <motion.span
                           initial={{ scale: 0 }}
@@ -406,7 +396,6 @@ export default function App() {
                           </svg>
                         </motion.span>
                       )}
-
                       <span className={`text-base font-bold leading-tight tracking-tight ${isSelected ? 'text-emerald-700 dark:text-emerald-300' : 'text-slate-800 dark:text-slate-200'}`}>
                         {lang.localName}
                       </span>
@@ -426,13 +415,12 @@ export default function App() {
                 className="flex items-center justify-between gap-4 px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 mb-4"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className="text-xl select-none" role="img" aria-label="seniors">👴👵</span>
+                  <span className="text-xl select-none" aria-label="seniors">&#128116;&#128117;</span>
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 leading-tight">Easy Mode</p>
                     <p className="text-[11px] text-slate-400 dark:text-slate-500 leading-tight">Larger text &amp; voice guidance</p>
                   </div>
                 </div>
-                {/* Custom pill toggle */}
                 <button
                   id="accessibility-intro-toggle"
                   onClick={() => setIsSimpleMode(!isSimpleMode)}
@@ -483,6 +471,7 @@ export default function App() {
 
             </motion.div>
           </div>
+
         ) : (
           user ? (
             (user.emailVerified === false && user.role !== 'authority' && !user.email?.endsWith('.gov') && !user.email?.endsWith('.demo')) ? (
