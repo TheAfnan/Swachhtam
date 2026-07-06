@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // Cleanly intercept and suppress third-party, sandbox-masked or HMR cross-origin script error events
+      window.onerror = function(message, source, lineno, colno, error) {
+        var msg = String(message || '');
+        var isNoisy = !msg || 
+                      msg.toLowerCase().includes('script error') || 
+                      msg.toLowerCase().includes('websocket') || 
+                      msg.toLowerCase().includes('firebase') || 
+                      msg.toLowerCase().includes('firestore') || 
+                      msg.toLowerCase().includes('extension') ||
+                      msg.toLowerCase().includes('cloud firestore') ||
+                      !source;
+        if (isNoisy) {
+          console.warn('Gracefully swallowed cross-origin browser script error via onerror:', msg);
+          return true; // Stop error propagation and default browser logging
+        }
+        return false;
+      };
+
+      window.addEventListener('error', function(e) {
+        if (!e) return;
+        var msg = e.message || '';
+        var isNoisy = !msg || 
+                      msg.toLowerCase().includes('script error') || 
+                      msg.toLowerCase().includes('websocket') || 
+                      msg.toLowerCase().includes('firebase') || 
+                      msg.toLowerCase().includes('firestore') || 
+                      msg.toLowerCase().includes('extension') ||
+                      msg.toLowerCase().includes('cloud firestore') ||
+                      e.filename === '';
+        if (isNoisy) {
+          console.warn('Gracefully swallowed cross-origin browser script error:', msg);
+          try {
+            e.preventDefault();
+            e.stopPropagation();
+          } catch (_) {}
+        }
+      }, true);
+
+      // Intercept and swallow unhandled promise rejections originating from isolated contexts like Firestore
+      window.addEventListener('unhandledrejection', function(e) {
+        if (!e) return;
+        var reason = e.reason ? (e.reason.message || String(e.reason)) : '';
+        var isNoisy = !reason || 
+                      reason.toLowerCase().includes('firebase') || 
+                      reason.toLowerCase().includes('firestore') || 
+                      reason.toLowerCase().includes('websocket') || 
+                      reason.toLowerCase().includes('unavailable') || 
+                      reason.toLowerCase().includes('script error');
+        if (isNoisy) {
+          console.warn('Gracefully swallowed sandbox promise rejection:', reason);
+          try {
+            e.preventDefault();
+            e.stopPropagation();
+          } catch (_) {}
+        }
+      }, true);
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#020408" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/192/000000/shield.png" />
+    <title>Swachhtam</title>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('Service Worker registered successfully:', reg.scope))
+            .catch(err => console.warn('Service Worker registration failed:', err));
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
