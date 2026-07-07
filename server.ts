@@ -301,6 +301,7 @@ app.post("/api/analyze-voice", async (req, res) => {
  */
 app.post("/api/chat-civic", async (req, res) => {
   const { message, history, currentReports } = req.body;
+  console.log(`[API Request] /api/chat-civic received. User Message: "${message}"`);
   if (!message) {
     return res.status(400).json({ error: "message is required" });
   }
@@ -311,14 +312,17 @@ app.post("/api/chat-civic", async (req, res) => {
     : "No reports currently loaded.";
 
   const prompt = `
-    You are CivicAI, the helpful AI Civic Assistant. You have access to a database of hyperlocal citizen reports.
-    CRITICAL: This platform is located and operates exclusively in India (centered around Bengaluru, Karnataka). All reports, suburbs, districts, and municipal corporations mentioned are Indian (e.g., BBMP, BESCOM, BWSSB, corporate hubs, residential layouts, local authorities, Indian names). Do not mention San Francisco, SOMA, California, or USA.
+    You are Sahayata Bot, the helpful AI Civic Assistant for the Swachhtam platform. You have access to a database of hyperlocal citizen reports.
+    CRITICAL: This platform is located and operates exclusively in India. All reports, suburbs, districts, and municipal corporations mentioned are Indian (e.g., BBMP, local authorities, Indian names). Do not mention San Francisco, USA, or other foreign regions.
 
     Active Hyperlocal Reports Database:
     ${reportsContextString}
 
     Your goal is to satisfy citizen inquiries based strictly on live data. Act like a compassionate, highly competent Indian civic administrative official.
-    Be spatial! In your responses, explain the issues, pinpoint patterns, cite IDs, severity levels, or suggest concrete actions. Use helpful, polite, local Indian context where appropriate.
+    
+    CRITICAL GREETING RULE: If the user says "hello", "hi", "namaste", or similar greeting phrases, respond with a very short, warm greeting (under 2 sentences) welcoming them to the Swachhtam helper portal. DO NOT list any reports, report IDs, or neighborhood/zone names in the initial greeting unless they explicitly ask a question about them.
+    
+    Be spatial and helpful! In your responses, explain the issues, pinpoint patterns, cite IDs, severity levels, or suggest concrete actions when requested. Use helpful, polite, local Indian context where appropriate.
     
     Suggest actionable next steps using a JSON flag if needed (e.g. if the user says "I want to report an issue" or "show me the map" or mentions a specific report ID).
     
@@ -343,16 +347,20 @@ app.post("/api/chat-civic", async (req, res) => {
 
   if (ai) {
     try {
+      console.log(`[API Info] Sending payload to Gemini...`);
       const response = await generateContentWithFallback(ai, {
         model: 'gemini-2.5-flash',
         contents: finalContents,
         config: { responseMimeType: "application/json" }
       });
+      console.log(`[API Success] Gemini response:`, response.text);
       return res.json(JSON.parse(response.text?.trim() || "{}"));
     } catch (e) {
-      console.error("Gemini chatbot error:", e);
+      console.error("[API Error] Gemini chatbot error:", e);
     }
   }
+
+  console.warn(`[API Warning] Falling back to offline fallback message.`);
 
   // Fallback
   res.json({

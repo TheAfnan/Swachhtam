@@ -92,7 +92,7 @@ export default function AiAssistantView({ reports, onNavigateTab, onHighlightRep
   // Localized welcome message
   const getWelcomeMessage = () => {
     if (language === 'hi') {
-      return "नमस्ते! मैं आपका डिजिटल सहायक हूँ। यहाँ हमारे क्षेत्र में दर्ज की गई समस्याओं की सूची है। आप मुझसे ऐसे प्रश्न पूछ सकते हैं:\n\n• *'पार्क के पास क्या समस्या है?'*\n• *'पूरी हुई समस्याओं की सूची दिखाओ'*\n• *'पानी लीक होने की शिकायत कहाँ दर्ज है?'*";
+      return "नमस्ते! मैं आपका सहायता बॉट हूँ। आप मुझसे अपने क्षेत्र की समस्याओं के बारे में प्रश्न पूछ सकते हैं, जैसे:\n\n• *'सड़क की समस्याओं की सूची दिखाएं'*\n• *'कौन सी शिकायतें हल हो गई हैं?'*";
     }
     if (language === 'ta') {
       return "வணக்கம்! நான் உங்கள் உதவிப்பொறி. நமது பகுதியில் உள்ள பிரச்சனைகள் பற்றி நீங்கள் என்னிடம் கேட்கலாம்:\n\n• *'பூங்காவில் என்ன பிரச்சனை?'*\n• *'தீர்க்கப்பட்ட பிரச்சனைகளை காட்டு'*\n• *'தண்ணீர் கசிவு புகார் எங்குள்ளது?'*";
@@ -106,7 +106,7 @@ export default function AiAssistantView({ reports, onNavigateTab, onHighlightRep
     if (language === 'mr') {
       return "नमस्कार! मी आपला डिजिटल सहाय्यक आहे. आपल्या भागातील समस्यांबद्दल आपण मला विचारू शकता:\n\n• *'बागेजवळ काय समस्या आहे?'*\n• *'सुटलेल्या समस्या दाखवा'*\n• *'पाणी गळतीची तक्रार कुठे आहे?'*";
     }
-    return "Hello! I am your neighborhood AI assistant. I can help you answer questions about problems in Hazratganj, Gomti Nagar, Chowk, Rajajipuram or nearby sectors in Lucknow. Ask me simple questions like:\n\n• *'Show me list of active road problems.'*\n• *'Which complaints are solved?'*\n• *'How can I help with garbage issues?'*";
+    return "Hello! I am Sahayata Bot, your Swachhtam AI assistant. Ask me questions about local issues, like:\n\n• *'Show me list of active road problems.'*\n• *'Which complaints are solved?'*\n• *'How can I help with garbage issues?'*";
   };
 
   const [chatHistory, setChatHistory] = useState<CivicChatHistoryItem[]>([]);
