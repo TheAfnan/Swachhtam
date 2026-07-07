@@ -37,7 +37,7 @@ if (API_KEY) {
 
 // Robust wrapper to perform content generation with automatic retries and model overrides during periods of high demand
 async function generateContentWithFallback(aiInstance: GoogleGenAI, params: { model: string; contents: any; config?: any }) {
-  const modelsToTry = [params.model, 'gemini-3.1-flash-lite', 'gemini-2.5-flash-image'];
+  const modelsToTry = [params.model, 'gemini-2.5-flash', 'gemini-1.5-flash'];
   let lastError: any = null;
 
   for (const modelName of modelsToTry) {
@@ -110,7 +110,7 @@ app.post("/api/translate", async (req, res) => {
   if (ai) {
     try {
       const response = await generateContentWithFallback(ai, {
-        model: 'gemini-3.5-flash',
+        model: 'gemini-2.5-flash',
         contents: prompt
       });
       return res.json({ translatedText: response.text?.trim() || text });
@@ -197,7 +197,7 @@ app.post("/api/analyze-issue", async (req, res) => {
       contents.push(prompt);
 
       const response = await generateContentWithFallback(ai, {
-        model: 'gemini-3.5-flash',
+        model: 'gemini-2.5-flash',
         contents: contents,
         config: {
           responseMimeType: "application/json"
@@ -272,7 +272,7 @@ app.post("/api/analyze-voice", async (req, res) => {
   if (ai) {
     try {
       const response = await generateContentWithFallback(ai, {
-        model: 'gemini-3.5-flash',
+        model: 'gemini-2.5-flash',
         contents: prompt,
         config: { responseMimeType: "application/json" }
       });
@@ -344,7 +344,7 @@ app.post("/api/chat-civic", async (req, res) => {
   if (ai) {
     try {
       const response = await generateContentWithFallback(ai, {
-        model: 'gemini-3.5-flash',
+        model: 'gemini-2.5-flash',
         contents: finalContents,
         config: { responseMimeType: "application/json" }
       });
@@ -409,7 +409,7 @@ app.post("/api/compare-images", async (req, res) => {
       contents.push(prompt);
 
       const response = await generateContentWithFallback(ai, {
-        model: 'gemini-3.5-flash',
+        model: 'gemini-2.5-flash',
         contents: contents,
         config: { responseMimeType: "application/json" }
       });
@@ -458,7 +458,7 @@ app.get("/api/predictive-analytics", async (req, res) => {
   if (ai) {
     try {
       const response = await generateContentWithFallback(ai, {
-        model: 'gemini-3.5-flash',
+        model: 'gemini-2.5-flash',
         contents: prompt,
         config: { responseMimeType: "application/json" }
       });
@@ -511,7 +511,7 @@ app.post("/api/gamification/legacy-summary", async (req, res) => {
   if (ai) {
     try {
       const response = await generateContentWithFallback(ai, {
-        model: 'gemini-3.5-flash',
+        model: 'gemini-2.5-flash',
         contents: prompt,
         config: { responseMimeType: "application/json" }
       });
