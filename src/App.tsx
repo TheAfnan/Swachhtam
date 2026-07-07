@@ -54,7 +54,7 @@ export default function App() {
   const [currentTab, setCurrentTab] = useState<string>('dashboard');
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     const saved = localStorage.getItem('theme');
-    return saved !== null ? saved === 'dark' : false;
+    return saved !== null ? saved === 'dark' : true;
   });
 
   const handleToggleDarkMode = () => {

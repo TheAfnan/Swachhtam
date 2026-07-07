@@ -519,6 +519,15 @@ onAuthStateChanged(auth, async (firebaseUser) => {
         if (parsed && parsed.uid === firebaseUser.uid) {
           profile = parsed;
           profile.emailVerified = isVerified;
+          // Auto-repair cached role if parsed incorrectly in previous versions
+          const emailLower = (firebaseUser.email || '').toLowerCase();
+          if (emailLower === 'citizen@swachhtam.demo') {
+            profile.role = 'citizen';
+          } else if (emailLower === 'authority@swachhtam.demo') {
+            profile.role = 'authority';
+          } else if (emailLower === 'admin@swachhtam.demo') {
+            profile.role = 'admin';
+          }
         }
       }
     } catch (_) {}
@@ -529,9 +538,10 @@ onAuthStateChanged(auth, async (firebaseUser) => {
         if (userDoc.exists()) {
           const data = userDoc.data();
           const emailLower = (firebaseUser.email || '').toLowerCase();
-          const isEmailAuthority = emailLower.endsWith('.gov') || emailLower.endsWith('.demo');
+          const isAdminEmail = emailLower === 'admin@swachhtam.demo' || emailLower.startsWith('admin@');
+          const isEmailAuthority = !isAdminEmail && (emailLower.endsWith('.gov') || emailLower === 'authority@swachhtam.demo');
           const dataRoleLower = (data.role || '').toLowerCase();
-          const finalRole = (dataRoleLower === 'admin') 
+          const finalRole = (dataRoleLower === 'admin' || isAdminEmail) 
             ? 'admin' 
             : (isEmailAuthority || dataRoleLower === 'authority') ? 'authority' : 'citizen';
           
@@ -558,7 +568,7 @@ onAuthStateChanged(auth, async (firebaseUser) => {
             uid: firebaseUser.uid,
             displayName: firebaseUser.displayName || 'Contributor',
             email: firebaseUser.email || '',
-            role: (firebaseUser.email?.endsWith('.gov') || firebaseUser.email?.endsWith('.demo')) ? 'authority' : 'citizen',
+            role: (firebaseUser.email?.endsWith('.gov') || firebaseUser.email?.toLowerCase() === 'authority@swachhtam.demo') ? 'authority' : (firebaseUser.email?.toLowerCase() === 'admin@swachhtam.demo' || firebaseUser.email?.toLowerCase().startsWith('admin@')) ? 'admin' : 'citizen',
             points: 100,
             badges: [],
             impactScore: 50,
@@ -580,7 +590,7 @@ onAuthStateChanged(auth, async (firebaseUser) => {
           uid: firebaseUser.uid,
           displayName: firebaseUser.displayName || 'Contributor',
           email: firebaseUser.email || '',
-          role: (firebaseUser.email?.endsWith('.gov') || firebaseUser.email?.endsWith('.demo')) ? 'authority' : 'citizen',
+          role: (firebaseUser.email?.endsWith('.gov') || firebaseUser.email?.toLowerCase() === 'authority@swachhtam.demo') ? 'authority' : (firebaseUser.email?.toLowerCase() === 'admin@swachhtam.demo' || firebaseUser.email?.toLowerCase().startsWith('admin@')) ? 'admin' : 'citizen',
           points: 100,
           badges: [],
           impactScore: 50,
@@ -622,7 +632,7 @@ export const loginWithEmail = async (email: string, password: string, rememberMe
       const data = userDoc.data();
       const emailLower = (email || '').toLowerCase();
       const isAdminEmail = emailLower === 'admin@swachhtam.demo' || emailLower.startsWith('admin@');
-      const isEmailAuthority = !isAdminEmail && (emailLower.endsWith('.gov') || emailLower.endsWith('.demo'));
+      const isEmailAuthority = !isAdminEmail && (emailLower.endsWith('.gov') || emailLower === 'authority@swachhtam.demo');
       const dataRoleLower = (data.role || '').toLowerCase();
       const finalRole = (dataRoleLower === 'admin' || isAdminEmail) 
         ? 'admin' 
@@ -655,7 +665,7 @@ export const loginWithEmail = async (email: string, password: string, rememberMe
     } else {
       const emailLower = (email || '').toLowerCase();
       const isAdminEmail = emailLower === 'admin@swachhtam.demo' || emailLower.startsWith('admin@');
-      const isEmailAuthority = !isAdminEmail && (emailLower.endsWith('.gov') || emailLower.endsWith('.demo'));
+      const isEmailAuthority = !isAdminEmail && (emailLower.endsWith('.gov') || emailLower === 'authority@swachhtam.demo');
       const matchingSeed = INITIAL_USERS.find(u => u.email === email);
       profile = {
         uid: firebaseUser.uid,
@@ -682,7 +692,7 @@ export const loginWithEmail = async (email: string, password: string, rememberMe
     console.warn("Could not retrieve user profile, using local fallback:", err);
     const emailLower = (email || '').toLowerCase();
     const isAdminEmail = emailLower === 'admin@swachhtam.demo' || emailLower.startsWith('admin@');
-    const isEmailAuthority = !isAdminEmail && (emailLower.endsWith('.gov') || emailLower.endsWith('.demo'));
+    const isEmailAuthority = !isAdminEmail && (emailLower.endsWith('.gov') || emailLower === 'authority@swachhtam.demo');
     const matchingSeed = INITIAL_USERS.find(u => u.email === email);
     profile = {
       uid: firebaseUser.uid,

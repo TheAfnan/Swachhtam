@@ -571,33 +571,311 @@ export default function LoginView({
             </motion.div>
           </div>
 
-          {/* City skyline SVG graphic */}
-          <div className="pt-4 opacity-50 relative">
-            <svg viewBox="0 0 500 130" className="w-full text-emerald-500/15 dark:text-emerald-400/20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M0,120 L40,120 L40,65 L80,65 L80,95 L110,95 L110,40 L140,40 L140,80 L170,80 L170,105 L210,105 L210,30 L260,30 L260,85 L290,85 L290,60 L340,60 L340,95 L370,95 L370,50 L410,50 L410,120 L500,120"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M20,120 L60,120 L60,80 L95,80 L95,105 L130,105 L130,55 L160,55 L160,95 L200,95 L200,115 L230,115 L230,50 L280,50 L280,100 L310,100 L310,75 L360,75 L360,110 L390,110 L390,70 L430,70 L430,120"
-                stroke="currentColor"
-                strokeWidth="1"
-                strokeOpacity="0.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <circle cx="20" cy="115" r="4" className="fill-[var(--bg-card)] stroke-[var(--border-secondary)]" strokeWidth="1" />
-              <line x1="20" y1="115" x2="20" y2="120" stroke="currentColor" strokeWidth="1" />
-              <circle cx="95" cy="113" r="6" className="fill-emerald-500/10 stroke-emerald-500/30" strokeWidth="1" />
-              <line x1="95" y1="113" x2="95" y2="120" stroke="currentColor" strokeWidth="1" />
-              <circle cx="310" cy="115" r="4" className="fill-[var(--bg-card)] stroke-[var(--border-secondary)]" strokeWidth="1" />
-              <line x1="310" y1="115" x2="310" y2="120" stroke="currentColor" strokeWidth="1" />
-              <line x1="0" y1="120" x2="500" y2="120" stroke="currentColor" strokeWidth="1.5" />
-            </svg>
+          {/* 3D Isometric City — animated & highly structured */}
+          <div className="pt-6 relative overflow-hidden w-full select-none">
+            <div style={{ perspective: '1000px' }}>
+              <motion.div
+                animate={{ rotateY: [-4, 4, -4], y: [0, -6, 0] }}
+                transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ transformStyle: 'preserve-3d', transformOrigin: 'center center' }}
+                className="w-full flex justify-center items-center"
+              >
+                {(() => {
+                  const S = 15, SH = 7.5, SV = 16, cx = 280, cy = 135;
+                  const iso = (x: number, z: number, h: number = 0) => ({
+                    x: (x - z) * S + cx,
+                    y: (x + z - 6) * SH + cy - h * SV,
+                  });
+                  const pts = (...coords: {x:number;y:number}[]) => coords.map(p=>`${Math.round(p.x)},${Math.round(p.y)}`).join(' ');
+
+                  // Colors: High visibility in both Light and Dark mode
+                  // Light Mode: Vibrant emeralds, teal, and slate with high contrast borders
+                  // Dark Mode: Dark metallic blue-slate with neon emerald glows
+                  const bL  = darkMode ? '#1e293b' : '#10b981'; // Left Face
+                  const bR  = darkMode ? '#0f172a' : '#047857'; // Right Face
+                  const bT  = darkMode ? '#334155' : '#a7f3d0'; // Top Face
+                  const eg  = darkMode ? 'rgba(16,185,129,0.35)' : 'rgba(6,95,70,0.8)'; // Edges
+                  const egB = darkMode ? 'rgba(16,185,129,0.8)'  : 'rgba(6,95,70,1)';   // Strong highlights
+                  const winC    = darkMode ? '#34d399' : '#047857'; // Window lights
+                  const treeC   = darkMode ? '#059669' : '#065f46'; // Trees
+                  const groundC = darkMode ? 'rgba(15,23,42,0.9)' : '#e2e8f0'; // Ground base plate
+                  const roadC   = darkMode ? 'rgba(2,6,23,0.95)' : '#475569';  // Roads
+                  const roadMark = darkMode ? '#10b981' : '#f8fafc'; // Road lane marks
+                  const solarC  = darkMode ? '#0284c7' : '#0369a1'; // Solar panel color
+                  const fadeBg  = darkMode ? '#05070a' : '#f8fafc';
+
+                  // High-fidelity structured building list [gx, gz, gw, gd, gh, type]
+                  // sorted back-to-front (gx + gz)
+                  const bldgs: [number, number, number, number, number, string][] = [
+                    // Back Row (Skyline)
+                    [-5,   3,   1.2, 1.2, 2.5, 'standard'],
+                    [-3.5, 3.5, 1.5, 1.5, 4,   'standard'],
+                    [-1.5, 3.2, 1.2, 1.2, 3,   'standard'],
+                    [0.5,  3.5, 1.8, 1.8, 5,   'solar'],     // Eco tower with solar roof
+                    [2.8,  3.5, 2,   2,   7,   'main'],      // Smart Swachhtam Centerpiece
+                    [5.5,  3.5, 1.5, 1.5, 4.5, 'turbine'],   // Wind turbine tower
+                    [7.5,  3,   1.2, 1.2, 3,   'standard'],
+                    [9,    3,   1,   1,   2,   'standard'],
+
+                    // Mid Row (Residential / Offices)
+                    [-4.5, 1.5, 1.2, 1.2, 2,   'standard'],
+                    [-2.5, 1.8, 1.5, 1.5, 3.2, 'solar'],
+                    [-0.5, 1.5, 1.2, 1.2, 2.8, 'standard'],
+                    [1.5,  1.8, 1.4, 1.4, 3.5, 'standard'],
+                    [5,    1.5, 1.6, 1.6, 3,   'solar'],
+                    [7,    1.8, 1.2, 1.2, 2.5, 'standard'],
+
+                    // Front Row (Low-rise / Parks / Eco Hubs)
+                    [-3,   0.5, 1,   1,   1.5, 'standard'],
+                    [0,    0.5, 1.2, 1.2, 1.8, 'solar'],
+                    [3.5,  0.5, 1.2, 1.2, 1.5, 'standard'],
+                    [6,    0.5, 1,   1,   1.2, 'standard']
+                  ];
+
+                  // Ground coordinates for the main block base plate
+                  const gnd = pts(iso(-6.5, 5), iso(11.5, 5), iso(11.5, -0.5), iso(-6.5, -0.5));
+
+                  // Main streets (Grid lines & Asphalt)
+                  const road1 = pts(iso(-6.5, 1.2), iso(11.5, 1.2), iso(11.5, 0.4), iso(-6.5, 0.4)); // Mid street
+                  const road2 = pts(iso(-6.5, 3.0), iso(11.5, 3.0), iso(11.5, 2.3), iso(-6.5, 2.3)); // Back street
+                  const roadCross = pts(iso(2.2, 5), iso(2.7, 5), iso(2.7, -0.5), iso(2.2, -0.5));   // Vertical cross road
+
+                  // Trees at specific coordinates
+                  const trees = [
+                    [-5.5, 0.8], [-1.5, 0.8], [2, 0.8], [5, 0.8], [8.5, 0.8], // Front line
+                    [-3.5, 2.0], [4, 2.0], [6.5, 2.0],                        // Mid line
+                    [-6, 4], [9.5, 4]                                         // Back line
+                  ];
+
+                  return (
+                    <svg viewBox="0 0 560 190" className="w-full max-w-[560px]" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <radialGradient id="isoGlw" cx="50%" cy="75%" r="50%">
+                          <stop offset="0%" stopColor={darkMode ? 'rgba(16,185,129,0.22)' : 'rgba(16,185,129,0.15)'} />
+                          <stop offset="100%" stopColor="rgba(0,0,0,0)" />
+                        </radialGradient>
+                        <linearGradient id="iFL" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stopColor={fadeBg} />
+                          <stop offset="100%" stopColor={fadeBg+'00'} />
+                        </linearGradient>
+                        <linearGradient id="iFR" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stopColor={fadeBg+'00'} />
+                          <stop offset="100%" stopColor={fadeBg} />
+                        </linearGradient>
+                      </defs>
+
+                      {/* Ground block */}
+                      <polygon points={gnd} fill={groundC} stroke={eg} strokeWidth="0.5" />
+
+                      {/* Green Park Grass patches */}
+                      <polygon points={pts(iso(-6, 2.2), iso(-3.5, 2.2), iso(-3.5, 1.6), iso(-6, 1.6))} fill={darkMode ? '#064e3b' : '#d1fae5'} />
+                      <polygon points={pts(iso(4, 2.2), iso(6.5, 2.2), iso(6.5, 1.6), iso(4, 1.6))} fill={darkMode ? '#064e3b' : '#d1fae5'} />
+
+                      {/* Roads networks */}
+                      <polygon points={road1} fill={roadC} />
+                      <polygon points={road2} fill={roadC} />
+                      <polygon points={roadCross} fill={roadC} />
+
+                      {/* Road Lane Markings */}
+                      {[-5, -3, -1, 1, 4, 6, 8, 10].map((gx, i) => {
+                        const a1 = iso(gx, 0.8), b1 = iso(gx + 0.8, 0.8);
+                        const a2 = iso(gx, 2.65), b2 = iso(gx + 0.8, 2.65);
+                        return (
+                          <g key={i}>
+                            <line x1={a1.x} y1={a1.y} x2={b1.x} y2={b1.y} stroke={roadMark} strokeWidth="0.8" strokeDasharray="3,3" opacity="0.6" />
+                            <line x1={a2.x} y1={a2.y} x2={b2.x} y2={b2.y} stroke={roadMark} strokeWidth="0.8" strokeDasharray="3,3" opacity="0.6" />
+                          </g>
+                        );
+                      })}
+
+                      {/* Animated Moving Cars (Isometric blocks sliding on roads) */}
+                      {/* Car 1: Left to Right on Front Road */}
+                      <g>
+                        <path d="M-100,-100" fill="none">
+                          <animateMotion
+                            path={`M ${iso(-6.5, 0.8).x} ${iso(-6.5, 0.8).y} L ${iso(11.5, 0.8).x} ${iso(11.5, 0.8).y}`}
+                            dur="8s"
+                            repeatCount="indefinite"
+                          />
+                        </path>
+                        {/* Red Electric Car */}
+                        <polygon points="-4,-2 4,-6 8,-4 0,0" fill="#ef4444" />
+                        <polygon points="-4,-4 -4,-2 0,0 0,-2" fill="#b91c1c" />
+                        <polygon points="0,0 8,-4 8,-6 0,-2" fill="#dc2626" />
+                      </g>
+
+                      {/* Car 2: Right to Left on Mid Road */}
+                      <g>
+                        <path d="M-100,-100" fill="none">
+                          <animateMotion
+                            path={`M ${iso(11.5, 2.65).x} ${iso(11.5, 2.65).y} L ${iso(-6.5, 2.65).x} ${iso(-6.5, 2.65).y}`}
+                            dur="10s"
+                            repeatCount="indefinite"
+                          />
+                        </path>
+                        {/* Blue Electric Car */}
+                        <polygon points="-4,-2 4,-6 8,-4 0,0" fill="#3b82f6" />
+                        <polygon points="-4,-4 -4,-2 0,0 0,-2" fill="#1d4ed8" />
+                        <polygon points="0,0 8,-4 8,-6 0,-2" fill="#2563eb" />
+                      </g>
+
+                      {/* Ground glow under buildings */}
+                      <ellipse cx="280" cy="172" rx="230" ry="12" fill="url(#isoGlw)" />
+
+                      {/* Rendering Buildings */}
+                      {bldgs.map(([gx, gz, gw, gd, gh, type], i) => {
+                        const b1 = iso(gx, gz + gd);
+                        const b2 = iso(gx + gw, gz + gd);
+                        const b3 = iso(gx + gw, gz);
+                        const t1 = iso(gx, gz + gd, gh);
+                        const t2 = iso(gx + gw, gz + gd, gh);
+                        const t3 = iso(gx + gw, gz, gh);
+                        const t4 = iso(gx, gz, gh);
+
+                        const lf = pts(b1, t1, t2, b2);
+                        const rf = pts(b2, t2, t3, b3);
+                        const tf = pts(t1, t2, t3, t4);
+
+                        const isMain = type === 'main';
+                        const isTurbine = type === 'turbine';
+                        const isSolar = type === 'solar';
+
+                        const strokeW = isMain ? '1.0' : '0.6';
+
+                        return (
+                          <g key={i}>
+                            {/* Left Face */}
+                            <polygon points={lf} fill={bL} stroke={eg} strokeWidth={strokeW} />
+                            {/* Right Face */}
+                            <polygon points={rf} fill={bR} stroke={eg} strokeWidth={strokeW} />
+                            {/* Top Face */}
+                            <polygon points={tf} fill={bT} stroke={eg} strokeWidth={strokeW} />
+
+                            {/* Windows / Lighting details */}
+                            {gh >= 2.5 && !isTurbine && (
+                              <g opacity="0.85">
+                                {/* Windows on Left Face */}
+                                {Array.from({ length: Math.floor(gh) }).map((_, wIdx) => {
+                                  const wY = b1.y - (wIdx + 0.5) * SV - 3;
+                                  const wX1 = b1.x + (gw * S * 0.3);
+                                  const wX2 = b1.x + (gw * S * 0.7);
+                                  return (
+                                    <g key={wIdx}>
+                                      <circle cx={wX1} cy={wY} r="1.5" fill={winC} />
+                                      <circle cx={wX2} cy={wY} r="1.5" fill={winC} />
+                                    </g>
+                                  );
+                                })}
+                              </g>
+                            )}
+
+                            {/* Solar Panels on Top of Solar Buildings */}
+                            {isSolar && (
+                              <g>
+                                {/* Mini Solar Panel Placed on Top Roof */}
+                                <polygon
+                                  points={pts(
+                                    { x: t1.x + 3, y: t1.y + 2 },
+                                    { x: t2.x - 3, y: t2.y + 2 },
+                                    { x: t3.x - 3, y: t3.y - 2 },
+                                    { x: t4.x + 3, y: t4.y - 2 }
+                                  )}
+                                  fill={solarC}
+                                  stroke={egB}
+                                  strokeWidth="0.5"
+                                />
+                                <line x1={t1.x + 4} y1={t1.y + 2} x2={t3.x - 4} y2={t3.y - 2} stroke={egB} strokeWidth="0.4" />
+                                <line x1={t2.x - 4} y1={t2.y + 2} x2={t4.x + 4} y2={t4.y - 2} stroke={egB} strokeWidth="0.4" />
+                              </g>
+                            )}
+
+                            {/* Main Centerpiece details (HQ green dome/antenna) */}
+                            {isMain && (
+                              <g>
+                                {/* Dome on top roof */}
+                                <path
+                                  d={`M ${t1.x + 4} ${t1.y} A 10 10 0 0 1 ${t3.x - 4} ${t3.y} Z`}
+                                  fill={darkMode ? 'rgba(16,185,129,0.2)' : 'rgba(16,185,129,0.3)'}
+                                  stroke={egB}
+                                  strokeWidth="0.8"
+                                />
+                                {/* Main Antenna spire */}
+                                <line x1={t2.x} y1={t2.y - 4} x2={t2.x} y2={t2.y - 22} stroke={egB} strokeWidth="1.2" />
+                                <circle cx={t2.x} cy={t2.y - 22} r="2.5" fill={egB} />
+                                <circle cx={t2.x} cy={t2.y - 22} r="5" fill={egB} opacity="0.4">
+                                  <animate attributeName="r" values="2.5;7;2.5" dur="2s" repeatCount="indefinite" />
+                                </circle>
+                              </g>
+                            )}
+
+                            {/* Wind Turbine on Turbine Tower */}
+                            {isTurbine && (
+                              <g>
+                                {/* Turbine shaft */}
+                                <line x1={t2.x} y1={t2.y} x2={t2.x} y2={t2.y - 18} stroke={egB} strokeWidth="1.5" />
+                                {/* Rotating Blades */}
+                                <g transform={`translate(${t2.x}, ${t2.y - 18})`}>
+                                  <g>
+                                    <animateTransform
+                                      attributeName="transform"
+                                      type="rotate"
+                                      from="0"
+                                      to="360"
+                                      dur="4s"
+                                      repeatCount="indefinite"
+                                    />
+                                    <line x1="0" y1="0" x2="0" y2="-12" stroke={egB} strokeWidth="1" />
+                                    <line x1="0" y1="0" x2="10" y2="6" stroke={egB} strokeWidth="1" />
+                                    <line x1="0" y1="0" x2="-10" y2="6" stroke={egB} strokeWidth="1" />
+                                  </g>
+                                </g>
+                              </g>
+                            )}
+                          </g>
+                        );
+                      })}
+
+                      {/* Trees Placement */}
+                      {trees.map(([gx, gz], i) => {
+                        const p = iso(gx, gz);
+                        return (
+                          <g key={i}>
+                            {/* Trunk */}
+                            <line x1={p.x} y1={p.y} x2={p.x} y2={p.y - 8} stroke="#78350f" strokeWidth="1.2" />
+                            {/* Leafy Green Cone */}
+                            <polygon points={`${p.x},${p.y - 20} ${p.x - 5},${p.y - 10} ${p.x + 5},${p.y - 10}`} fill={treeC} />
+                            <polygon points={`${p.x},${p.y - 15} ${p.x - 6},${p.y - 7} ${p.x + 6},${p.y - 7}`} fill={treeC} opacity="0.9" />
+                          </g>
+                        );
+                      })}
+
+                      {/* Ambient streetlights */}
+                      {[[0.5, 0.4], [5.5, 0.4], [9.5, 0.4]].map(([gx, gz], i) => {
+                        const p = iso(gx, gz);
+                        return (
+                          <g key={i}>
+                            <line x1={p.x} y1={p.y} x2={p.x} y2={p.y - 10} stroke={eg} strokeWidth="1" />
+                            <circle cx={p.x} cy={p.y - 10} r="2" fill={winC} />
+                            {/* Light beam projection */}
+                            <polygon points={`${p.x},${p.y - 10} ${p.x - 4},${p.y} ${p.x + 4},${p.y}`} fill={darkMode ? 'rgba(52,211,153,0.15)' : 'rgba(16,185,129,0.2)'} />
+                          </g>
+                        );
+                      })}
+
+                      {/* Boundary dashed line */}
+                      <line x1="30" y1="172" x2="530" y2="172" stroke={eg} strokeWidth="1.2" strokeDasharray="4,6" />
+
+                      {/* Smooth edge gradient blends */}
+                      <rect x="0" y="0" width="55" height="190" fill="url(#iFL)" />
+                      <rect x="505" y="0" width="55" height="190" fill="url(#iFR)" />
+                    </svg>
+                  );
+                })()}
+              </motion.div>
+            </div>
           </div>
+
+
         </div>
 
         {/* Right Column: Beautiful auth card */}
