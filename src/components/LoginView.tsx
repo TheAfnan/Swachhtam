@@ -462,9 +462,9 @@ export default function LoginView({
               {t('landingSubheading')}
             </p>
 
-            {/* Three Feature Cards — animated */}
+            {/* Three Feature Cards — animated with flow arrows */}
             <motion.div
-              className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-slate-200 dark:border-slate-800/50"
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-0 pt-6 border-t border-slate-200 dark:border-slate-800/50"
               initial="hidden"
               animate="visible"
               variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
@@ -474,7 +474,7 @@ export default function LoginView({
                 variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } } }}
                 whileHover={{ y: -4, scale: 1.03 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="flex items-start space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2 p-3 rounded-xl hover:bg-emerald-500/5 dark:hover:bg-emerald-500/10 border border-transparent hover:border-emerald-500/20 transition-all duration-200 cursor-default group"
+                className="flex items-start space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2 p-3 rounded-xl hover:bg-emerald-500/5 dark:hover:bg-emerald-500/10 border border-transparent hover:border-emerald-500/20 transition-all duration-200 cursor-default group flex-1"
               >
                 <motion.div
                   animate={{ y: [0, -4, 0] }}
@@ -489,12 +489,32 @@ export default function LoginView({
                 </div>
               </motion.div>
 
+              {/* Arrow 1: Report → Track */}
+              <motion.div
+                variants={{ hidden: { opacity: 0, x: -8 }, visible: { opacity: 1, x: 0, transition: { duration: 0.4, delay: 0.3 } } }}
+                className="hidden sm:flex flex-col items-center shrink-0 px-1 self-start pt-4"
+              >
+                <div className="flex items-center gap-0.5">
+                  <motion.div
+                    animate={{ x: [0, 4, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                    className="h-px w-8 bg-gradient-to-r from-emerald-400/40 to-blue-400/40"
+                  />
+                  <motion.div
+                    animate={{ x: [0, 4, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut', delay: 0.1 }}
+                  >
+                    <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-600" />
+                  </motion.div>
+                </div>
+              </motion.div>
+
               {/* Track */}
               <motion.div
                 variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } } }}
                 whileHover={{ y: -4, scale: 1.03 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="flex items-start space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2 p-3 rounded-xl hover:bg-blue-500/5 dark:hover:bg-blue-500/10 border border-transparent hover:border-blue-500/20 transition-all duration-200 cursor-default group"
+                className="flex items-start space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2 p-3 rounded-xl hover:bg-blue-500/5 dark:hover:bg-blue-500/10 border border-transparent hover:border-blue-500/20 transition-all duration-200 cursor-default group flex-1"
               >
                 <motion.div
                   animate={{ y: [0, -4, 0] }}
@@ -509,12 +529,32 @@ export default function LoginView({
                 </div>
               </motion.div>
 
+              {/* Arrow 2: Track → Resolve */}
+              <motion.div
+                variants={{ hidden: { opacity: 0, x: -8 }, visible: { opacity: 1, x: 0, transition: { duration: 0.4, delay: 0.6 } } }}
+                className="hidden sm:flex flex-col items-center shrink-0 px-1 self-start pt-4"
+              >
+                <div className="flex items-center gap-0.5">
+                  <motion.div
+                    animate={{ x: [0, 4, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                    className="h-px w-8 bg-gradient-to-r from-blue-400/40 to-violet-400/40"
+                  />
+                  <motion.div
+                    animate={{ x: [0, 4, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
+                  >
+                    <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-600" />
+                  </motion.div>
+                </div>
+              </motion.div>
+
               {/* Resolve */}
               <motion.div
                 variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } } }}
                 whileHover={{ y: -4, scale: 1.03 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="flex items-start space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2 p-3 rounded-xl hover:bg-violet-500/5 dark:hover:bg-violet-500/10 border border-transparent hover:border-violet-500/20 transition-all duration-200 cursor-default group"
+                className="flex items-start space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2 p-3 rounded-xl hover:bg-violet-500/5 dark:hover:bg-violet-500/10 border border-transparent hover:border-violet-500/20 transition-all duration-200 cursor-default group flex-1"
               >
                 <motion.div
                   animate={{ y: [0, -4, 0] }}
