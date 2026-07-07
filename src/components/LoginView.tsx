@@ -272,46 +272,62 @@ export default function LoginView({
   return (
     <div className="min-h-screen w-full flex flex-col justify-between bg-slate-50 dark:bg-[#05070a] text-slate-800 dark:text-slate-100 p-4 sm:p-6 md:p-8 lg:px-16 lg:py-8 font-sans overflow-y-auto overflow-x-hidden relative">
       
-      {/* Top Right Corner Theme Toggle */}
-      {onToggleDarkMode && (
-        <button
-          type="button"
-          onClick={onToggleDarkMode}
-          className="absolute top-4 right-4 md:top-6 md:right-8 p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800/80 shadow-md hover:shadow-lg hover:scale-105 cursor-pointer transition-all duration-200 z-50 flex items-center justify-center gap-2 font-bold text-xs"
-          title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-        >
-          {darkMode ? (
-            <>
-              <Sun className="w-4 h-4 text-amber-500 animate-pulse" />
-              <span className="hidden sm:inline">Light Mode</span>
-            </>
-          ) : (
-            <>
-              <Moon className="w-4 h-4 text-emerald-600" />
-              <span className="hidden sm:inline">Dark Mode</span>
-            </>
-          )}
-        </button>
-      )}
+
       
       {/* HEADER SECTION */}
-      <header className="w-full max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-6 pb-6 border-b border-slate-800/40">
+      <header className="w-full max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-slate-200/60 dark:border-slate-800/40">
         {/* Left: Brand logo */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 shrink-0">
           <Logo size={44} />
           <BrandWordmark size="md" />
         </div>
 
-        {/* Right: Role selector */}
+        {/* Right: Label row + Role cards + Theme toggle */}
         <div className="flex flex-col items-start md:items-end gap-2">
-          <span className="text-[11px] font-bold tracking-wider uppercase text-slate-500">
-            {t('roleSelectTitle')}
-          </span>
+          {/* Top row: Label badge + Theme toggle */}
+          <div className="flex items-center gap-3">
+            {/* Highlighted role selector label */}
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/25 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400 font-bold uppercase tracking-wider text-[10px]">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+              </span>
+              {t('roleSelectTitle')}
+            </span>
+            {/* Inline Theme Toggle — no longer absolute/overlapping */}
+            {onToggleDarkMode && (
+              <motion.button
+                type="button"
+                onClick={onToggleDarkMode}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/80 shadow-sm cursor-pointer transition-colors duration-200 font-bold text-[10px]"
+                title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              >
+                {darkMode ? (
+                  <>
+                    <Sun className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+                    <span className="hidden sm:inline">Light Mode</span>
+                  </>
+                ) : (
+                  <>
+                    <Moon className="w-3.5 h-3.5 text-slate-500" />
+                    <span className="hidden sm:inline">Dark Mode</span>
+                  </>
+                )}
+              </motion.button>
+            )}
+          </div>
+
+          {/* Role cards row */}
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+
             {/* Citizen Hero Card */}
-            <button
+            <motion.button
               type="button"
               id="role-btn-citizen"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => {
                 setRole('citizen');
                 setIsRegister(true);
@@ -323,30 +339,34 @@ export default function LoginView({
               }}
               className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl border transition-all duration-200 text-left cursor-pointer ${
                 role === 'citizen'
-                  ? 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.15)] text-slate-900 dark:text-white'
-                  : 'bg-slate-900 border-slate-800 hover:border-slate-700 text-slate-500 dark:text-slate-400'
+                  ? 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500 shadow-[0_0_14px_rgba(16,185,129,0.2)] text-slate-900 dark:text-white'
+                  : 'bg-white/60 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
               }`}
             >
-              <div className={`p-1.5 rounded-lg ${
-                role === 'citizen' ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400' : 'bg-slate-800 text-slate-400 dark:text-slate-500'
+              <div className={`p-1.5 rounded-lg transition-colors duration-200 ${
+                role === 'citizen'
+                  ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500'
               }`}>
                 <Users className="w-4 h-4" />
               </div>
               <div>
-                <h3 className={`text-xs font-bold ${role === 'citizen' ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300'}`}>{t('citizenHeroTitle')}</h3>
-                <p className="text-[9px] text-slate-500 mt-0.5 leading-none">
-                  {t('citizenHeroDesc')}
-                </p>
+                <h3 className={`text-xs font-bold transition-colors duration-200 ${
+                  role === 'citizen' ? 'text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-300'
+                }`}>{t('citizenHeroTitle')}</h3>
+                <p className="text-[9px] text-slate-500 mt-0.5 leading-none">{t('citizenHeroDesc')}</p>
               </div>
-              <ChevronRight className={`w-3.5 h-3.5 ml-1 transition-transform ${
-                role === 'citizen' ? 'text-emerald-600 dark:text-emerald-400 translate-x-0.5' : 'text-slate-400 dark:text-slate-600'
+              <ChevronRight className={`w-3.5 h-3.5 ml-1 transition-all duration-200 ${
+                role === 'citizen' ? 'text-emerald-500 translate-x-0.5' : 'text-slate-400 dark:text-slate-600'
               }`} />
-            </button>
+            </motion.button>
 
             {/* Municipal Authority Card */}
-            <button
+            <motion.button
               type="button"
               id="role-btn-authority"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => {
                 setRole('authority');
                 setIsRegister(false);
@@ -358,30 +378,34 @@ export default function LoginView({
               }}
               className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl border transition-all duration-200 text-left cursor-pointer ${
                 role === 'authority'
-                  ? 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.15)] text-slate-900 dark:text-white'
-                  : 'bg-slate-900 border-slate-800 hover:border-slate-700 text-slate-500 dark:text-slate-400'
+                  ? 'bg-blue-500/10 dark:bg-blue-500/20 border-blue-500 shadow-[0_0_14px_rgba(59,130,246,0.2)] text-slate-900 dark:text-white'
+                  : 'bg-white/60 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
               }`}
             >
-              <div className={`p-1.5 rounded-lg ${
-                role === 'authority' ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400' : 'bg-slate-800 text-slate-400 dark:text-slate-500'
+              <div className={`p-1.5 rounded-lg transition-colors duration-200 ${
+                role === 'authority'
+                  ? 'bg-blue-500/20 text-blue-600 dark:text-blue-400'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500'
               }`}>
                 <Building2 className="w-4 h-4" />
               </div>
               <div>
-                <h3 className={`text-xs font-bold ${role === 'authority' ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300'}`}>{t('municipalAuthorityTitle')}</h3>
-                <p className="text-[9px] text-slate-500 mt-0.5 leading-none">
-                  {t('municipalAuthorityDesc')}
-                </p>
+                <h3 className={`text-xs font-bold transition-colors duration-200 ${
+                  role === 'authority' ? 'text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-300'
+                }`}>{t('municipalAuthorityTitle')}</h3>
+                <p className="text-[9px] text-slate-500 mt-0.5 leading-none">{t('municipalAuthorityDesc')}</p>
               </div>
-              <ChevronRight className={`w-3.5 h-3.5 ml-1 transition-transform ${
-                role === 'authority' ? 'text-emerald-600 dark:text-emerald-400 translate-x-0.5' : 'text-slate-400 dark:text-slate-600'
+              <ChevronRight className={`w-3.5 h-3.5 ml-1 transition-all duration-200 ${
+                role === 'authority' ? 'text-blue-500 translate-x-0.5' : 'text-slate-400 dark:text-slate-600'
               }`} />
-            </button>
+            </motion.button>
 
             {/* System Admin Card */}
-            <button
+            <motion.button
               type="button"
               id="role-btn-admin"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => {
                 setRole('admin');
                 setIsRegister(false);
@@ -393,25 +417,28 @@ export default function LoginView({
               }}
               className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl border transition-all duration-200 text-left cursor-pointer ${
                 role === 'admin'
-                  ? 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.15)] text-slate-900 dark:text-white'
-                  : 'bg-slate-900 border-slate-800 hover:border-slate-700 text-slate-500 dark:text-slate-400'
+                  ? 'bg-violet-500/10 dark:bg-violet-500/20 border-violet-500 shadow-[0_0_14px_rgba(139,92,246,0.2)] text-slate-900 dark:text-white'
+                  : 'bg-white/60 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
               }`}
             >
-              <div className={`p-1.5 rounded-lg ${
-                role === 'admin' ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400' : 'bg-slate-800 text-slate-400 dark:text-slate-500'
+              <div className={`p-1.5 rounded-lg transition-colors duration-200 ${
+                role === 'admin'
+                  ? 'bg-violet-500/20 text-violet-600 dark:text-violet-400'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500'
               }`}>
                 <Sliders className="w-4 h-4" />
               </div>
               <div>
-                <h3 className={`text-xs font-bold ${role === 'admin' ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300'}`}>{t('systemAdminTitle')}</h3>
-                <p className="text-[9px] text-slate-500 mt-0.5 leading-none">
-                  {t('systemAdminDesc')}
-                </p>
+                <h3 className={`text-xs font-bold transition-colors duration-200 ${
+                  role === 'admin' ? 'text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-300'
+                }`}>{t('systemAdminTitle')}</h3>
+                <p className="text-[9px] text-slate-500 mt-0.5 leading-none">{t('systemAdminDesc')}</p>
               </div>
-              <ChevronRight className={`w-3.5 h-3.5 ml-1 transition-transform ${
-                role === 'admin' ? 'text-emerald-600 dark:text-emerald-400 translate-x-0.5' : 'text-slate-400 dark:text-slate-600'
+              <ChevronRight className={`w-3.5 h-3.5 ml-1 transition-all duration-200 ${
+                role === 'admin' ? 'text-violet-500 translate-x-0.5' : 'text-slate-400 dark:text-slate-600'
               }`} />
-            </button>
+            </motion.button>
+
           </div>
         </div>
       </header>
@@ -435,38 +462,73 @@ export default function LoginView({
               {t('landingSubheading')}
             </p>
 
-            {/* Three Feature Cards with green circles */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6 border-t border-slate-200 dark:border-slate-800/50">
-              <div className="flex items-start space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2">
-                <div className="w-9 h-9 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/20 flex items-center justify-center shrink-0">
+            {/* Three Feature Cards — animated */}
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-slate-200 dark:border-slate-800/50"
+              initial="hidden"
+              animate="visible"
+              variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
+            >
+              {/* Report */}
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } } }}
+                whileHover={{ y: -4, scale: 1.03 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="flex items-start space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2 p-3 rounded-xl hover:bg-emerald-500/5 dark:hover:bg-emerald-500/10 border border-transparent hover:border-emerald-500/20 transition-all duration-200 cursor-default group"
+              >
+                <motion.div
+                  animate={{ y: [0, -4, 0] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+                  className="w-9 h-9 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/20 flex items-center justify-center shrink-0 group-hover:shadow-[0_0_12px_rgba(16,185,129,0.3)] transition-shadow duration-300"
+                >
                   <FileText className="w-4 h-4" />
-                </div>
+                </motion.div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">{t('reportFeature')}</h4>
+                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200">{t('reportFeature')}</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">{t('reportFeatureDesc')}</p>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="flex items-start space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2">
-                <div className="w-9 h-9 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/20 flex items-center justify-center shrink-0">
+              {/* Track */}
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } } }}
+                whileHover={{ y: -4, scale: 1.03 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="flex items-start space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2 p-3 rounded-xl hover:bg-blue-500/5 dark:hover:bg-blue-500/10 border border-transparent hover:border-blue-500/20 transition-all duration-200 cursor-default group"
+              >
+                <motion.div
+                  animate={{ y: [0, -4, 0] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+                  className="w-9 h-9 rounded-full bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-500/20 flex items-center justify-center shrink-0 group-hover:shadow-[0_0_12px_rgba(59,130,246,0.3)] transition-shadow duration-300"
+                >
                   <Clock className="w-4 h-4" />
-                </div>
+                </motion.div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">{t('trackFeature')}</h4>
+                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">{t('trackFeature')}</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">{t('trackFeatureDesc')}</p>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="flex items-start space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2">
-                <div className="w-9 h-9 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/20 flex items-center justify-center shrink-0">
+              {/* Resolve */}
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } } }}
+                whileHover={{ y: -4, scale: 1.03 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="flex items-start space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2 p-3 rounded-xl hover:bg-violet-500/5 dark:hover:bg-violet-500/10 border border-transparent hover:border-violet-500/20 transition-all duration-200 cursor-default group"
+              >
+                <motion.div
+                  animate={{ y: [0, -4, 0] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: 1.6 }}
+                  className="w-9 h-9 rounded-full bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-100 dark:border-violet-500/20 flex items-center justify-center shrink-0 group-hover:shadow-[0_0_12px_rgba(139,92,246,0.3)] transition-shadow duration-300"
+                >
                   <Shield className="w-4 h-4" />
-                </div>
+                </motion.div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">{t('resolveFeature')}</h4>
+                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-200">{t('resolveFeature')}</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">{t('resolveFeatureDesc')}</p>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
 
           {/* City skyline SVG graphic */}

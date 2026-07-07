@@ -1,7 +1,7 @@
 {
-  "short_name": "CivicAI",
-  "name": "CivicAI – Community Hero",
-  "description": "Hyperlocal Community Problem-Solving Platform with Predictive Civic Analytics and AI Incident Reporting System.",
+  "short_name": "Swachhtam",
+  "name": "Swachhtam – Ek Kadam, Behtar Shehar",
+  "description": "Community action portal to report, track, and resolve civic issues for a better and cleaner city.",
   "start_url": "/",
   "background_color": "#020408",
   "theme_color": "#020408",
