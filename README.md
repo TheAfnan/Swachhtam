@@ -18,9 +18,7 @@ The platform leverages Artificial Intelligence, multilingual accessibility, geos
 
 ---
 
-## Problem Statement
-
-**Community Hero – Hyperlocal Problem Solver**
+## Problem
 
 Communities frequently face issues such as potholes, overflowing garbage bins, broken streetlights, drainage problems, water leakages, and damaged public infrastructure. Existing reporting systems often lack transparency, provide limited tracking, and make communication between citizens and authorities difficult.
 
@@ -138,7 +136,7 @@ Complaint Closed
 
 # Live Demo
 
-🌐 https://swachhtam-76306977881.us-west1.run.app/
-
+  🌐  https://swachhtam.vercel.app/
+  🌐 https://swachhtam-76306977881.us-west1.run.app/
 ---
 
